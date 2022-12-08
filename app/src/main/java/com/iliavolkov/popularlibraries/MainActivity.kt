@@ -19,46 +19,30 @@ class MainActivity : AppCompatActivity(), MainView {
 
         with(binding) {
             btn1.setOnClickListener {
-                presenter.onCounterClick(0)
+                presenter.onCounterClickOne()
             }
             btn2.setOnClickListener {
-                presenter.onCounterClick(1)
+                presenter.onCounterClickTwo()
             }
             btn3.setOnClickListener {
-                presenter.onCounterClick(2)
+                presenter.onCounterClickThird()
             }
         }
-
     }
 
     private fun initPresenter() {
         presenter = CountersPresenter(this, CountersModel())
     }
 
-    override fun setText(counterText: String, position: Int) {
-        with(binding) {
-            when (position) {
-                0 -> tvText1.text = counterText
-                1 -> tvText2.text = counterText
-                2 -> tvText3.text = counterText
-            }
-        }
+    override fun setTextOne(counterText: String) {
+        binding.tvText1.text = counterText
     }
 
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//        outState.putIntArray("counter", counter.toIntArray())
-//    }
-//
-//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-//        super.onRestoreInstanceState(savedInstanceState)
-//        val array = savedInstanceState.getIntArray("counter")
-//        counter.let { list ->
-//            list.clear()
-//            array?.toList()?.let {
-//                list.addAll(it)
-//            }
-//        }
-//        initView()
-//    }
+    override fun setTextTwo(counterText: String) {
+        binding.tvText2.text = counterText
+    }
+
+    override fun setTextThird(counterText: String) {
+        binding.tvText3.text = counterText
+    }
 }
