@@ -1,6 +1,6 @@
-package com.iliavolkov.popularlibraries
+package com.iliavolkov.popularlibraries.repository.impl
 
-class CountersModel {
+class CountersRepository {
 
     private val counter = mutableListOf(0, 0, 0)
 

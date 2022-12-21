@@ -1,23 +1,16 @@
 package com.iliavolkov.popularlibraries
 
+import com.iliavolkov.popularlibraries.repository.impl.GithubRepositoryImpl
 import moxy.MvpPresenter
 
-class CountersPresenter(private val model: CountersModel):MvpPresenter<MainView>() {
+class CountersPresenter:MvpPresenter<MainView>() {
+
+    private val githubRepository:GithubRepositoryImpl by lazy { GithubRepositoryImpl() }
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        //INIT
+        viewState.initList(githubRepository.getUsers())
     }
 
-    fun onCounterClickOne() {
-        viewState.setTextOne(model.next(0).toString())
-    }
 
-    fun onCounterClickTwo() {
-        viewState.setTextTwo(model.next(1).toString())
-    }
-
-    fun onCounterClickThird() {
-        viewState.setTextThird(model.next(2).toString())
-    }
 }
