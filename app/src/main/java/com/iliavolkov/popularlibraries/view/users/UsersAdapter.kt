@@ -1,4 +1,4 @@
-package com.iliavolkov.popularlibraries.view.main
+package com.iliavolkov.popularlibraries.view.users
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.iliavolkov.popularlibraries.R
 import com.iliavolkov.popularlibraries.databinding.ItemUserBinding
 import com.iliavolkov.popularlibraries.model.GithubUser
 
-class UserAdapter : RecyclerView.Adapter<UserAdapter.UserHolder>() {
+class UsersAdapter(val listener: OnItemClickListener) : RecyclerView.Adapter<UsersAdapter.UserHolder>() {
     private var userData: List<GithubUser> = listOf()
 
 
@@ -35,6 +35,7 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserHolder>() {
         fun bind(item:GithubUser){
             ItemUserBinding.bind(itemView).run {
                 tvUserLogin.text = item.login
+                root.setOnClickListener { listener.onItemClick(item) }
             }
         }
     }

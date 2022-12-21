@@ -1,42 +1,53 @@
-package com.iliavolkov.popularlibraries.view.users
+package com.iliavolkov.popularlibraries.view.user
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.iliavolkov.popularlibraries.databinding.FragmentUserBinding
 import com.iliavolkov.popularlibraries.databinding.FragmentUsersListBinding
 import com.iliavolkov.popularlibraries.model.GithubUser
+import com.iliavolkov.popularlibraries.utils.BUNDLE_KEY_USER_INFO
 import com.iliavolkov.popularlibraries.utils.OnBackPressedListener
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import kotlin.math.log
 
-class UsersFragment:MvpAppCompatFragment(),UsersView,OnBackPressedListener,OnItemClickListener {
-    private var _binding: FragmentUsersListBinding? = null
+class UserFragment:MvpAppCompatFragment(),UserView,OnBackPressedListener {
+    private var _binding: FragmentUserBinding? = null
     private val binding get() = _binding!!
-    private val userAdapter: UsersAdapter by lazy { UsersAdapter(this) }
-    private val presenter by moxyPresenter { UsersPresenter() }
+    private val presenter by moxyPresenter { UserPresenter() }
+    private lateinit var user:GithubUser
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentUsersListBinding.inflate(inflater, container, false)
+        _binding = FragmentUserBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rvGithubUsers.adapter = userAdapter
+        getInfoUser()
+
     }
 
-    override fun initList(list: List<GithubUser>) {
-        userAdapter.setData(list)
+    private fun getInfoUser() {
+        arguments?.let {
+            it.getParcelable<GithubUser>(BUNDLE_KEY_USER_INFO)?.let { item ->
+                user = GithubUser(
+                    item.login
+                )
+            }
+        }
+        binding.tvUserLogin.text = user.login
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = UsersFragment()
+        fun newInstance(bundle: Bundle) = UserFragment().apply { arguments = bundle }
     }
 
     override fun onDestroy() {
@@ -45,8 +56,4 @@ class UsersFragment:MvpAppCompatFragment(),UsersView,OnBackPressedListener,OnIte
     }
 
     override fun onBackPressed() = presenter.onBackPressed()
-
-    override fun onItemClick(user: GithubUser) {
-        presenter.openUserProfile(user)
-    }
 }
