@@ -1,28 +1,43 @@
 package com.iliavolkov.popularlibraries.view.main
 
 import android.os.Bundle
-import com.iliavolkov.popularlibraries.CountersPresenter
-import com.iliavolkov.popularlibraries.MainView
+import com.github.terrakok.cicerone.androidx.AppNavigator
+import com.iliavolkov.popularlibraries.App
+import com.iliavolkov.popularlibraries.R
 import com.iliavolkov.popularlibraries.databinding.ActivityMainBinding
-import com.iliavolkov.popularlibraries.model.GithubUser
+import com.iliavolkov.popularlibraries.utils.OnBackPressedListener
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 
 class MainActivity : MvpAppCompatActivity(), MainView {
 
+    private val navigator = AppNavigator(this, R.id.container)
     private lateinit var binding: ActivityMainBinding
-    private val userAdapter:UserAdapter by lazy { UserAdapter() }
-    private val presenter by moxyPresenter { CountersPresenter() }
+    private val presenter by moxyPresenter { MainPresenter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.rvGithubUsers.adapter = userAdapter
     }
 
-    override fun initList(list: List<GithubUser>) {
-        userAdapter.setData(list)
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        App.instance.navigationHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        App.instance.navigationHolder.removeNavigator()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        supportFragmentManager.fragments.forEach {
+            if(it is OnBackPressedListener  && it.onBackPressed()){
+                return
+            }
+        }
+        presenter.onBackPressed()
     }
 }
