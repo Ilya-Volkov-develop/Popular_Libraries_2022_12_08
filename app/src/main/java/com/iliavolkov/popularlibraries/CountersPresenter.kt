@@ -1,16 +1,23 @@
 package com.iliavolkov.popularlibraries
 
-class CountersPresenter(private val view: MainView, private val model: CountersModel) {
+import moxy.MvpPresenter
+
+class CountersPresenter(private val model: CountersModel):MvpPresenter<MainView>() {
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        //INIT
+    }
 
     fun onCounterClickOne() {
-        view.setTextOne(model.next(0).toString())
+        viewState.setTextOne(model.next(0).toString())
     }
 
     fun onCounterClickTwo() {
-        view.setTextTwo(model.next(1).toString())
+        viewState.setTextTwo(model.next(1).toString())
     }
 
     fun onCounterClickThird() {
-        view.setTextThird(model.next(2).toString())
+        viewState.setTextThird(model.next(2).toString())
     }
 }

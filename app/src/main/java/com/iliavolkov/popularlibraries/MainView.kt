@@ -1,6 +1,11 @@
 package com.iliavolkov.popularlibraries
 
-interface MainView {
+import moxy.MvpView
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
+
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface MainView:MvpView {
 
     fun setTextOne(counterText: String)
     fun setTextTwo(counterText: String)

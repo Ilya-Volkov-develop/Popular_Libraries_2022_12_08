@@ -1,21 +1,22 @@
 package com.iliavolkov.popularlibraries
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.iliavolkov.popularlibraries.databinding.ActivityMainBinding
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
 
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : MvpAppCompatActivity(), MainView {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var presenter: CountersPresenter
+
+    private val presenter by moxyPresenter { CountersPresenter(CountersModel()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initPresenter()
 
         with(binding) {
             btn1.setOnClickListener {
@@ -28,10 +29,6 @@ class MainActivity : AppCompatActivity(), MainView {
                 presenter.onCounterClickThird()
             }
         }
-    }
-
-    private fun initPresenter() {
-        presenter = CountersPresenter(this, CountersModel())
     }
 
     override fun setTextOne(counterText: String) {
