@@ -1,6 +1,6 @@
 package com.iliavolkov.popularlibraries
 
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.*
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
@@ -28,4 +28,21 @@ fun main() {
         .subscribe {
             println(it)
         }
+
+    Single.create {  //возвращает данные и завершается
+        it.onSuccess(1)
+    }
+
+    Maybe.create{ //Можем вернуть данные а можем завершить поток
+        it.onSuccess(1)
+        it.onComplete()
+    }
+
+    Completable.create{ //Ничего не возвращает
+        it.onComplete()
+    }
+
+    Flowable.create({//помогает справится с большим потоком
+                    it.onNext(1)
+    },BackpressureStrategy.DROP)
 }
