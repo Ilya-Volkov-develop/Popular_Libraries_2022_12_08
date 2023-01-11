@@ -33,6 +33,13 @@ class UsersFragment:MvpAppCompatFragment(),UsersView,OnBackPressedListener,OnIte
     override fun initList(list: List<GithubUser>) {
         userAdapter.setData(list)
     }
+    override fun showLoading() {
+        binding.progress.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        binding.progress.visibility = View.GONE
+    }
 
     companion object {
         @JvmStatic

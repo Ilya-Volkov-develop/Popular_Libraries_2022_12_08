@@ -13,6 +13,4 @@ class UserPresenter:MvpPresenter<UserView>() {
         router.exit()
         return true
     }
-
-
 }
